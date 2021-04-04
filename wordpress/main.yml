@@ -1,0 +1,36 @@
+- hosts: all 
+  vars:
+    php_version: "7.4"
+  tasks:
+  # - name: Disable SELinux
+  #   selinux:
+  #     state: disabled
+  - include_tasks: php.yml
+    when: group_names.0 == "web"
+
+  - include_tasks: apache.yml
+    when: group_names.0 == "web"
+
+  - include_tasks: wordpress.yml
+    when: group_names.0 == "web"
+
+  - include_tasks: mysql.yml
+    when: group_names.0 == "DB"
+  
+  - include_tasks: phpfile.yml
+    when: group_names.0 == "wp"
+
+  - include_tasks: ubwordpress.yml
+    when: group_names.0 == "wp"
+
+  - include_tasks: ubapache.yml
+    when: group_names.0 == "wp"
+
+  # - include_tasks: ubapache.yml
+  #   when: group_names.0 == "ub"
+    
+  - include_tasks: ubphp.yml
+    when: group_names.0 == "wp"
+
+  # - include_tasks: ubphp.yml
+  #   when: group_names.0 == "ub"

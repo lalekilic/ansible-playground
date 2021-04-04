@@ -1,0 +1,17 @@
+- hosts: "{{ host }}"
+  tasks:
+  - yum:
+      name: ntp
+      state: latest
+  - name: Reconfigure time servers
+    lineinfile:
+      path: /etc/ntp.conf
+      regexp: '^server.*iburst$'
+      line: 'server pool.ntp.org iburst'
+    notify: restart ntpd
+  handlers:
+  - name: restart ntpd
+    service:
+      name: ntpd
+      state: restarted
+      enabled: yes

@@ -1,0 +1,69 @@
+# - name: Install selinux-utils
+#   apt: 
+#     name: libselinux-python
+#     state: latest
+ 
+#   state: present
+#   when: ansible_os_family == "Debian"
+
+# - name: Install apache2 for Ubuntu (Debian)
+#   apt: 
+#     name: apache2
+#     state: latest
+
+# - name: Install unzip for Ubuntu (debian)
+#   apt: 
+#     name: unzip
+#     state: latest
+
+# - name: Check if apache2 is running
+# #   service: 
+# #     name: apache2
+# #     state: started
+
+    
+# - name: "Add repository for PHP 7.0."
+#   apt_repository:  repo="ppa:ondrej/php" 
+#   update_cache: yes
+#   roles:
+# - role: geerlingguy.php
+#   php_version: "7.0"
+#   php_packages: 
+#   - php7.0-common 
+#   - php7.0-cli  
+#   - php7.0-dev
+#   snip:
+#   php_date_timezone: "America/Chicago"
+
+# - name: Install WordPress
+#   remote_user: ubuntu
+#   hosts: all
+#   become: true
+#   become_user: root
+#   gather_facts: true
+#   tasks:
+
+- name: Download and Extract WorPress
+  unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: /var/www/html/
+    remote_src: yes
+
+- name: Update default Apache site
+  lineinfile:
+    path: /etc/apache2/sites-enabled/000-default.conf
+    state: present
+    regexp: '(.)+DocumentRoot /var/www/html'
+    line: 'DocumentRoot /var/www/html/wordpress'
+
+- name: Restart Apache
+  service:
+    name: apache2
+    state: restarted
+
+
+# - name: Download and unarchive into /var/www/html
+#   ansible.builtin.unarchive:
+#     src:  https://www.free-css.com/assets/files/free-css-templates/download/page264/moon.zip
+#     dest: /var/www/html
+#     remote_src: yes

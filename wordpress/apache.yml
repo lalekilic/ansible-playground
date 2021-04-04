@@ -1,0 +1,15 @@
+- name: Install httpd
+  package:
+    name: httpd
+    state: latest
+
+- name: Install MySQL Client
+  package:
+    name: mariadb
+    state: latest
+    
+- name: Start httpd
+  service:
+    name: httpd
+    state: started
+    enabled: yes
